@@ -11,12 +11,26 @@ export default class Gallery extends React.Component{
 		this.state = {
 			login: false,
 			myName: 'DiabloHAHAHA',
-			images: []
+			images: [],
+			add: false
 		}
 		this.previousLocation = this.props.location
 		axios.post('/',{}).then(res =>{
 			this.setState({images: res.data})
 		}).catch(err => console.log(err))
+
+		this.confirm = this.confirm.bind(this);
+	}
+
+	confirm(event){
+		if(event.key == "Enter"){
+			let v = event.target.value.toLowerCase();
+			if (v == "naotan" || v == "zgz"){
+				this.setState({add: true});
+			}else{
+				event.target.value = '';
+			}
+		}
 	}
 
 	componentWillUpdate(nextProps) {
@@ -40,9 +54,15 @@ export default class Gallery extends React.Component{
 		return(
 		<div>
 			<Nav login={this.state.login}/>
-			<Link to={{pathname:'/add', state: {modal: true}}}>
-				<button className="btn btn-primary">Add</button>
-			</Link>
+			<div className="container text-center">
+				{this.state.add ?
+					<Link to={{pathname:'/add', state: {modal: true}}}>
+						<button className="btn btn-primary">Add</button>
+					</Link> :
+					<input className="form-control" onKeyDown={this.confirm}
+					placeholder="Enter passcode to upload images" />
+				}
+			</div>
 			<Switch location={isModal ? this.previousLocation : location}>
 				<GalleryRoute path="/" info={this.state} component={Masonry}/>
 				<GalleryRoute path="/collections" info={this.state} component={Masonry}/>
@@ -84,7 +104,6 @@ const Add = ({match, history}) => {
 }
 
 const Image = ({match, history, data}) => {
-	console.log(match)
 	const back = (e) => {
 	    e.stopPropagation();
 	    history.goBack();
@@ -126,10 +145,14 @@ styles.modal = {
 
 styles.img = {
 	position: 'absolute',
+	top: 0,
+	left: 0,
+	bottom: 0,
+	right: 0,
+	maxHeight: window.innerHeight,
+	maxWidth: window.innerWidth,
 	background: 'rgba(80, 80, 80, 0.7)',
-	top: '15%',
-	left: '10%',
-	right: '10%',
+	margin: 'auto',
 	padding: 15,
 	border: '1px solid black',
 	borderRadius: '0.5em'
