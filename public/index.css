@@ -1,0 +1,12 @@
+html{
+	height: 100%;
+}
+body{
+	background-image: url(https://lh5.googleusercontent.com/g0j7GmBhdeMkw9MwBRRA8odcqM53IIQ4CJJNKVKCi656ufjY2YiuRpBPBUhMryzFmTtON2mnpdQYvyep8HMKv4y7WR_r4PeIbtgM8-HzJdqIsiwg5NQCzxulCmtxlh_Vru8ox0_u);
+	background-size: cover;
+	background-attachment: fixed;
+}
+
+input{
+	margin: 10px;
+}
