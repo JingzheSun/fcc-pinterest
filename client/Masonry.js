@@ -2,13 +2,16 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import Bricks from 'bricks.js';
 
+
 export default class Masonry extends React.Component{
 
 	componentDidUpdate() {
-		instance.update();
+		if (instance){
+			instance.update();
+		}
 		setTimeout(() => {
 			instance.pack();
-		}, 20);
+		}, 30);
 	}
 
 	componentWillUnmount() {

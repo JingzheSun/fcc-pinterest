@@ -14,3 +14,12 @@ input{
 .btn{
 	margin: 10px;
 }
+
+.fa {
+	font-size: 1.4em;
+	transition: font-size 0.3s;
+}
+
+.fa:hover {
+	font-size: 1.7em;
+}

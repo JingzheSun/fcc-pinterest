@@ -3,6 +3,7 @@ import {Route, Switch, Redirect, Link} from 'react-router-dom';
 import axios from 'axios';
 import Nav from './Nav.js';
 import Masonry from './Masonry.js';
+import Login from './Login.js';
 
 export default class Gallery extends React.Component{
 
@@ -10,13 +11,14 @@ export default class Gallery extends React.Component{
 		super(props);
 		this.state = {
 			login: false,
-			myName: 'DiabloHAHAHA',
+			user: {username: 'GUEST'},
 			images: [],
 			add: false
 		}
 		this.previousLocation = this.props.location
 		axios.post('/',{}).then(res =>{
-			this.setState({images: res.data})
+			let d = res.data
+			this.setState({images:d.images, login: d.login, user: d.user})
 		}).catch(err => console.log(err))
 
 		this.confirm = this.confirm.bind(this);
@@ -53,7 +55,7 @@ export default class Gallery extends React.Component{
 	    )
 		return(
 		<div>
-			<Nav login={this.state.login}/>
+			<Nav info={this.state}/>
 			<div className="container text-center">
 				{this.state.add ?
 					<Link to={{pathname:'/add', state: {modal: true}}}>
@@ -67,12 +69,18 @@ export default class Gallery extends React.Component{
 				<GalleryRoute path="/" info={this.state} component={Masonry}/>
 				<GalleryRoute path="/collections" info={this.state} component={Masonry}/>
 		    	<GalleryRoute path="/my" info={this.state} component={Masonry}/>
-		    	<Redirect to={{pathname:'/'}}/>
 	    	</Switch>
-	    	{isModal && <Route path="/img/:id" render={props => (
-	    		<Image {...props} data={this.state.images} />
-	    	)} />}
-	    	{isModal && <Route path="/add" component={Add} />}
+	    	<Switch>
+	  		  	<Route path="/add" component={Add} />
+		    	<Route path="/login" component={Login} />
+		    	{
+		    		this.state.images.length ?
+		    		<Route path="/img/:id" render={props => (
+			    		<Image {...props} data={this.state.images} />
+			    	)} />:
+			    	<Redirect from="/img" to='/' />
+		    	}
+	    	</Switch>
 	    </div>
 		)
 	}
