@@ -6,16 +6,20 @@ import Bricks from 'bricks.js';
 export default class Masonry extends React.Component{
 
 	componentDidUpdate() {
-		instance.pack();
-		setTimeout(() => {
-			instance.pack();
-		}, 30);
+		setTimeout(()=>{
+			instance.pack();	
+		}, 30)
+		
+	}
+
+	componentDidMount() {
+		createInstance();
 	}
 
 	componentWillUnmount() {
-	    instance.resize(false)
+		instance.resize(false);
 	}
-
+	
 	render(){
 		let {match} = this.props;
 		let state = this.props.info;
@@ -25,12 +29,11 @@ export default class Masonry extends React.Component{
 		}else if (state.login && match.url == '/collections'){
 			images = images.filter(image=> state.user.collections.includes(image._id))
 		}
-
 		return(
 		<div className="container" id="container">
 	      	{images.map((v, i) => (
 	      		<div key={i} style={styles.base}>
-		      		<Link to={{pathname:'/img/'+v._id, state: {modal: true}}}>
+		      		<Link to={{pathname:`${match.url}/img/${v._id}`, state: {modal: true}}}>
 		      			<img src={v.url} style={styles.img} />
 		      		</Link>
 	      		</div>
@@ -70,7 +73,7 @@ const sizes = [
 
 // start it up, when the DOM is ready
 // note that if images are in the grid, you may need to wait for document.readyState === 'complete'
-$(document).ready(function(){
+const createInstance =()=>{
 	instance = Bricks({
 	  	container: '#container',
 	  	packed: 'data-packed',
@@ -79,5 +82,4 @@ $(document).ready(function(){
   	instance
     	.resize(true)     // bind resize handler
     	.pack()           // pack initial items
-
-})
+}

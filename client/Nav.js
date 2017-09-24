@@ -28,7 +28,7 @@ export default class Nav extends React.Component{
 
 		const Guest = () =>(
 			<ul className="nav navbar-nav navbar-right">
-				<li><NavLink to={{pathname:'/login', state: {modal: true}}}>Login</NavLink></li>
+				<li><NavLink to={{pathname:`${this.props.location.pathname}/login`, state: {modal: true}}}>Login</NavLink></li>
 			</ul>
 		)
 

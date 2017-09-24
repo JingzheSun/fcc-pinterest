@@ -29001,13 +29001,13 @@ var Gallery = function (_React$Component) {
 			return _react2.default.createElement(
 				'div',
 				null,
-				_react2.default.createElement(_Nav2.default, { info: this.state }),
+				_react2.default.createElement(_Nav2.default, { location: this.props.location, info: this.state }),
 				_react2.default.createElement(
 					'div',
 					{ className: 'container text-center' },
 					this.state.login && _react2.default.createElement(
 						_reactRouterDom.Link,
-						{ to: { pathname: '/add', state: { modal: true } } },
+						{ to: { pathname: this.props.location.pathname + '/add', state: { modal: true } } },
 						_react2.default.createElement(
 							'button',
 							{ id: 'add' },
@@ -29018,18 +29018,19 @@ var Gallery = function (_React$Component) {
 				_react2.default.createElement(
 					_reactRouterDom.Switch,
 					{ location: isModal ? this.previousLocation : location },
-					_react2.default.createElement(GalleryRoute, { exact: true, path: '/', info: this.state, component: _Masonry2.default }),
+					_react2.default.createElement(_reactRouterDom.Redirect, { exact: true, from: '/', to: '/main' }),
+					_react2.default.createElement(GalleryRoute, { path: '/main', info: this.state, component: _Masonry2.default }),
 					_react2.default.createElement(GalleryRoute, { path: '/collections', info: this.state, component: _Masonry2.default }),
 					_react2.default.createElement(GalleryRoute, { path: '/my', info: this.state, component: _Masonry2.default })
 				),
 				_react2.default.createElement(
 					_reactRouterDom.Switch,
 					null,
-					_react2.default.createElement(_reactRouterDom.Route, { path: '/add', component: Add }),
-					_react2.default.createElement(_reactRouterDom.Route, { path: '/login', component: _Login2.default }),
-					this.state.images.length ? _react2.default.createElement(_reactRouterDom.Route, { path: '/img/:id', render: function render(props) {
+					_react2.default.createElement(_reactRouterDom.Route, { path: '/:whatever/add', component: Add }),
+					_react2.default.createElement(_reactRouterDom.Route, { path: '/:whatever/login', component: _Login2.default }),
+					this.state.images.length ? _react2.default.createElement(_reactRouterDom.Route, { path: '/:position/img/:id', render: function render(props) {
 							return _react2.default.createElement(Image, _extends({}, props, { like: _this2.like, thumb: _this2.thumb, data: _this2.state }));
-						} }) : _react2.default.createElement(_reactRouterDom.Redirect, { from: '/img', to: '/' })
+						} }) : _react2.default.createElement(_reactRouterDom.Redirect, { from: '/:position/img', to: '/' })
 				)
 			);
 		}
@@ -29049,8 +29050,11 @@ var GalleryRoute = function GalleryRoute(route) {
 
 var Add = function Add(_ref) {
 	var match = _ref.match,
-	    history = _ref.history;
+	    history = _ref.history,
+	    location = _ref.location;
 
+	console.log(location);
+	console.log(match);
 	var back = function back(e) {
 		e.stopPropagation();
 		history.goBack();
@@ -30092,6 +30096,8 @@ var Nav = function (_React$Component) {
 	}, {
 		key: 'render',
 		value: function render() {
+			var _this2 = this;
+
 			var s = this.props.info;
 			var User = function User() {
 				return _react2.default.createElement(
@@ -30154,7 +30160,7 @@ var Nav = function (_React$Component) {
 						null,
 						_react2.default.createElement(
 							_reactRouterDom.NavLink,
-							{ to: { pathname: '/login', state: { modal: true } } },
+							{ to: { pathname: _this2.props.location.pathname + '/login', state: { modal: true } } },
 							'Login'
 						)
 					)
@@ -30235,10 +30241,14 @@ var Masonry = function (_React$Component) {
 	_createClass(Masonry, [{
 		key: 'componentDidUpdate',
 		value: function componentDidUpdate() {
-			instance.pack();
 			setTimeout(function () {
 				instance.pack();
 			}, 30);
+		}
+	}, {
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			createInstance();
 		}
 	}, {
 		key: 'componentWillUnmount',
@@ -30261,7 +30271,6 @@ var Masonry = function (_React$Component) {
 					return state.user.collections.includes(image._id);
 				});
 			}
-
 			return _react2.default.createElement(
 				'div',
 				{ className: 'container', id: 'container' },
@@ -30271,7 +30280,7 @@ var Masonry = function (_React$Component) {
 						{ key: i, style: styles.base },
 						_react2.default.createElement(
 							_reactRouterDom.Link,
-							{ to: { pathname: '/img/' + v._id, state: { modal: true } } },
+							{ to: { pathname: match.url + '/img/' + v._id, state: { modal: true } } },
 							_react2.default.createElement('img', { src: v.url, style: styles.img })
 						)
 					);
@@ -30308,7 +30317,7 @@ var sizes = [{ columns: 2, gutter: 25 }, { mq: '768px', columns: 3, gutter: 20 }
 
 // start it up, when the DOM is ready
 // note that if images are in the grid, you may need to wait for document.readyState === 'complete'
-$(document).ready(function () {
+var createInstance = function createInstance() {
 	instance = (0, _bricks2.default)({
 		container: '#container',
 		packed: 'data-packed',
@@ -30316,7 +30325,7 @@ $(document).ready(function () {
 	});
 	instance.resize(true) // bind resize handler
 	.pack(); // pack initial items
-});
+};
 
 /***/ }),
 /* 267 */

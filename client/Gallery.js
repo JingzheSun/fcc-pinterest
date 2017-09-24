@@ -74,28 +74,29 @@ export default class Gallery extends React.Component{
 	    )
 		return(
 		<div>
-			<Nav info={this.state}/>
+			<Nav location={this.props.location} info={this.state}/>
 			<div className="container text-center">
 				{this.state.login &&
-					<Link to={{pathname:'/add', state: {modal: true}}}>
+					<Link to={{pathname:`${this.props.location.pathname}/add`, state: {modal: true}}}>
 						<button id='add'>UPLOAD IMAGE</button>
 					</Link>
 				}
 			</div>
 			<Switch location={isModal ? this.previousLocation : location}>
-				<GalleryRoute exact path="/" info={this.state} component={Masonry}/>
+				<Redirect exact from="/" to='/main' />
+				<GalleryRoute path="/main" info={this.state} component={Masonry}/>
 				<GalleryRoute path="/collections" info={this.state} component={Masonry}/>
 		    	<GalleryRoute path="/my" info={this.state} component={Masonry}/>
 	    	</Switch>
 	    	<Switch>
-	  		  	<Route path="/add" component={Add} />
-		    	<Route path="/login" component={Login} />
+	  		  	<Route path="/:whatever/add" component={Add} />
+		    	<Route path="/:whatever/login" component={Login} />
 		    	{
 		    		this.state.images.length ?
-		    		<Route path="/img/:id" render={props => (
+		    		<Route path="/:position/img/:id" render={props => (
 			    		<Image {...props} like={this.like} thumb={this.thumb} data={this.state} />
 			    	)} />:
-			    	<Redirect from="/img" to='/' />
+			    	<Redirect from="/:position/img" to='/' />
 		    	}
 	    	</Switch>
 	    </div>
@@ -109,7 +110,7 @@ const GalleryRoute = (route) => (
 	)}/>
 )
 
-const Add = ({match, history}) => {
+const Add = ({history, location}) => {
 	const back = (e) => {
 	    e.stopPropagation();
 	    history.goBack();
