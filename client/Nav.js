@@ -20,7 +20,7 @@ export default class Nav extends React.Component{
 			            <li><NavLink to='/collections'>My Collections</NavLink></li>
 			            <li><NavLink to='/my'>My Pins</NavLink></li>
 			            <li className="divider"></li>
-			            <li ><a href='/logout'>Logout</a></li>
+			            <li><a href='/logout'>Logout</a></li>
 			        </ul>
 		        </li>
 		    </ul>

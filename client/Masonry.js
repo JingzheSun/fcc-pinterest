@@ -6,9 +6,7 @@ import Bricks from 'bricks.js';
 export default class Masonry extends React.Component{
 
 	componentDidUpdate() {
-		if (instance){
-			instance.update();
-		}
+		instance.pack();
 		setTimeout(() => {
 			instance.pack();
 		}, 30);
@@ -19,7 +17,15 @@ export default class Masonry extends React.Component{
 	}
 
 	render(){
-		let images = this.props.info.images;
+		let {match} = this.props;
+		let state = this.props.info;
+		let images = state.images;
+		if (state.login && match.url == '/my'){
+			images = images.filter(image=>(image.creatorName == state.user.username))
+		}else if (state.login && match.url == '/collections'){
+			images = images.filter(image=> state.user.collections.includes(image._id))
+		}
+
 		return(
 		<div className="container" id="container">
 	      	{images.map((v, i) => (
@@ -48,7 +54,8 @@ styles.base = {
 styles.img = {
  	width: '224px',
   	margin: 0,
-  	padding: 0
+  	padding: 0,
+  	borderRadius: '0.5em'
 }
 
 

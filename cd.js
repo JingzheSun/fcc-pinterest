@@ -14,9 +14,9 @@ var Image = require('./server/models/image.js');
 User.find({}, (err, data) => {
 	console.log(err || data)
 });
-/*Image.find({}, (err, data) => {
+Image.find({}, (err, data) => {
 	console.log(err || data)
-});*/
+});
 
 /*User.remove({}, function(err, res){
     if (err) {

@@ -28936,23 +28936,12 @@ var Gallery = function (_React$Component) {
 			return console.log(err);
 		});
 
-		_this.confirm = _this.confirm.bind(_this);
+		_this.like = _this.like.bind(_this);
+		_this.thumb = _this.thumb.bind(_this);
 		return _this;
 	}
 
 	_createClass(Gallery, [{
-		key: 'confirm',
-		value: function confirm(event) {
-			if (event.key == "Enter") {
-				var v = event.target.value.toLowerCase();
-				if (v == "naotan" || v == "zgz") {
-					this.setState({ add: true });
-				} else {
-					event.target.value = '';
-				}
-			}
-		}
-	}, {
 		key: 'componentWillUpdate',
 		value: function componentWillUpdate(nextProps) {
 			var location = this.props.location;
@@ -28961,6 +28950,44 @@ var Gallery = function (_React$Component) {
 			if (nextProps.history.action !== 'POP' && (!location.state || !location.state.modal)) {
 				this.previousLocation = this.props.location;
 			}
+		}
+	}, {
+		key: 'like',
+		value: function like(match, tf, e) {
+			e.stopPropagation();
+			if (tf) {
+				this.setState(function (prev) {
+					prev.user.collections.push(match.params.id);
+					return { prev: prev };
+				});
+			} else {
+				this.setState(function (prev) {
+					var i = prev.user.collections.indexOf(match.params.id);
+					prev.user.collections.splice(i, 1);
+					return { prev: prev };
+				});
+			}
+			_axios2.default.post('/collections', { user: this.state.user }).then(function (res) {
+				return console.log('Liked');
+			}).catch(function (err) {
+				return console.log(err);
+			});
+		}
+	}, {
+		key: 'thumb',
+		value: function thumb(match, e) {
+			e.stopPropagation();
+			this.setState(function (prev) {
+				prev.images.find(function (ele) {
+					return match.params.id == ele._id;
+				}).Like += 1;
+				return { prev: prev };
+			});
+			_axios2.default.post('/thumb', { imageId: match.params.id }).then(function (res) {
+				return console.log('thumb up!');
+			}).catch(function (err) {
+				return console.log(err);
+			});
 		}
 	}, {
 		key: 'render',
@@ -28978,21 +29005,20 @@ var Gallery = function (_React$Component) {
 				_react2.default.createElement(
 					'div',
 					{ className: 'container text-center' },
-					this.state.add ? _react2.default.createElement(
+					this.state.login && _react2.default.createElement(
 						_reactRouterDom.Link,
 						{ to: { pathname: '/add', state: { modal: true } } },
 						_react2.default.createElement(
 							'button',
-							{ className: 'btn btn-primary' },
-							'Add'
+							{ id: 'add' },
+							'UPLOAD IMAGE'
 						)
-					) : _react2.default.createElement('input', { className: 'form-control', onKeyDown: this.confirm,
-						placeholder: 'Enter passcode to upload images' })
+					)
 				),
 				_react2.default.createElement(
 					_reactRouterDom.Switch,
 					{ location: isModal ? this.previousLocation : location },
-					_react2.default.createElement(GalleryRoute, { path: '/', info: this.state, component: _Masonry2.default }),
+					_react2.default.createElement(GalleryRoute, { exact: true, path: '/', info: this.state, component: _Masonry2.default }),
 					_react2.default.createElement(GalleryRoute, { path: '/collections', info: this.state, component: _Masonry2.default }),
 					_react2.default.createElement(GalleryRoute, { path: '/my', info: this.state, component: _Masonry2.default })
 				),
@@ -29002,7 +29028,7 @@ var Gallery = function (_React$Component) {
 					_react2.default.createElement(_reactRouterDom.Route, { path: '/add', component: Add }),
 					_react2.default.createElement(_reactRouterDom.Route, { path: '/login', component: _Login2.default }),
 					this.state.images.length ? _react2.default.createElement(_reactRouterDom.Route, { path: '/img/:id', render: function render(props) {
-							return _react2.default.createElement(Image, _extends({}, props, { data: _this2.state.images }));
+							return _react2.default.createElement(Image, _extends({}, props, { like: _this2.like, thumb: _this2.thumb, data: _this2.state }));
 						} }) : _react2.default.createElement(_reactRouterDom.Redirect, { from: '/img', to: '/' })
 				)
 			);
@@ -29048,7 +29074,15 @@ var Add = function Add(_ref) {
 var Image = function Image(_ref2) {
 	var match = _ref2.match,
 	    history = _ref2.history,
-	    data = _ref2.data;
+	    data = _ref2.data,
+	    like = _ref2.like,
+	    thumb = _ref2.thumb;
+
+
+	var findById = function findById(ele) {
+		return ele._id == match.params.id;
+	};
+	var image = data.images.find(findById);
 
 	var back = function back(e) {
 		e.stopPropagation();
@@ -29057,13 +29091,31 @@ var Image = function Image(_ref2) {
 	var stop = function stop(e) {
 		e.stopPropagation();
 	};
-	var findById = function findById(ele) {
-		return ele._id == match.params.id;
-	};
+
 	return _react2.default.createElement(
 		'div',
 		{ style: styles.dark, onClick: back },
-		_react2.default.createElement('img', { src: data.find(findById).url, style: styles.img })
+		_react2.default.createElement(
+			'div',
+			{ style: styles.canvas },
+			_react2.default.createElement('img', { src: image.url, style: styles.img }),
+			_react2.default.createElement(
+				'div',
+				{ style: styles.op },
+				_react2.default.createElement(
+					'span',
+					{ className: 'pull-left' },
+					data.login && (data.user.collections.includes(match.params.id) ? _react2.default.createElement('i', { onClick: like.bind(undefined, match, false), className: 'fa fa-heart', 'aria-hidden': 'true' }) : _react2.default.createElement('i', { onClick: like.bind(undefined, match, true), className: 'fa fa-heart-o', 'aria-hidden': 'true' })),
+					_react2.default.createElement('i', { onClick: thumb.bind(undefined, match), className: 'fa fa-thumbs-up', 'aria-hidden': 'true' }),
+					image.Like
+				),
+				_react2.default.createElement(
+					'span',
+					{ className: 'pull-right' },
+					'Uploader: ' + image.creatorName
+				)
+			)
+		)
 	);
 };
 
@@ -29075,12 +29127,17 @@ styles.dark = {
 	left: 0,
 	bottom: 0,
 	right: 0,
-	background: 'rgba(0, 0, 0, 0.35)'
+	background: 'rgba(0, 0, 0, 0.35)',
+	textAlign: 'center',
+	color: 'white',
+	alignItems: 'center',
+	justifyContent: 'center',
+	display: 'flex'
 };
 
 styles.modal = {
 	position: 'absolute',
-	background: 'rgba(80, 80, 80, 0.7)',
+	background: 'rgba(80, 80, 80, 0.5)',
 	top: '25%',
 	left: '10%',
 	right: '10%',
@@ -29089,19 +29146,29 @@ styles.modal = {
 	borderRadius: '1em'
 };
 
-styles.img = {
-	position: 'absolute',
-	top: 0,
-	left: 0,
-	bottom: 0,
-	right: 0,
-	maxHeight: window.innerHeight,
-	maxWidth: window.innerWidth,
-	background: 'rgba(80, 80, 80, 0.7)',
-	margin: 'auto',
-	padding: 15,
+styles.canvas = {
+	maxHeight: Math.round(window.innerHeight * 0.7),
+	maxWidth: Math.round(window.innerWidth * 0.7),
+	display: 'inline-block',
+	background: 'rgba(180, 180, 150, 0.3)',
+	padding: '5px',
 	border: '1px solid black',
 	borderRadius: '0.5em'
+};
+
+styles.img = {
+	maxHeight: Math.round(window.innerHeight * 0.6),
+	maxWidth: '100%',
+	margin: 'auto',
+	border: 'none',
+	borderRadius: '0.5em'
+};
+
+styles.op = {
+	background: 'rgba(0, 0, 0, 0)',
+	margin: '5px',
+	padding: 0,
+	fontSize: '20px'
 };
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
 
@@ -30168,9 +30235,7 @@ var Masonry = function (_React$Component) {
 	_createClass(Masonry, [{
 		key: 'componentDidUpdate',
 		value: function componentDidUpdate() {
-			if (instance) {
-				instance.update();
-			}
+			instance.pack();
 			setTimeout(function () {
 				instance.pack();
 			}, 30);
@@ -30183,7 +30248,20 @@ var Masonry = function (_React$Component) {
 	}, {
 		key: 'render',
 		value: function render() {
-			var images = this.props.info.images;
+			var match = this.props.match;
+
+			var state = this.props.info;
+			var images = state.images;
+			if (state.login && match.url == '/my') {
+				images = images.filter(function (image) {
+					return image.creatorName == state.user.username;
+				});
+			} else if (state.login && match.url == '/collections') {
+				images = images.filter(function (image) {
+					return state.user.collections.includes(image._id);
+				});
+			}
+
 			return _react2.default.createElement(
 				'div',
 				{ className: 'container', id: 'container' },
@@ -30222,7 +30300,8 @@ styles.base = {
 styles.img = {
 	width: '224px',
 	margin: 0,
-	padding: 0
+	padding: 0,
+	borderRadius: '0.5em'
 };
 
 var sizes = [{ columns: 2, gutter: 25 }, { mq: '768px', columns: 3, gutter: 20 }, { mq: '1024px', columns: 4, gutter: 15 }, { mq: '1366px', columns: 5, gutter: 15 }, { mq: '1600px', columns: 6, gutter: 15 }, { mq: '1920px', columns: 7, gutter: 15 }];
@@ -30661,7 +30740,7 @@ styles.dark = {
 styles.modal = {
 	position: 'absolute',
 	color: 'white',
-	background: 'rgba(80, 80, 80, 0.7)',
+	background: 'rgba(80, 80, 80, 0.5)',
 	top: '25%',
 	left: '10%',
 	right: '10%',

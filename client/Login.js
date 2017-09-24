@@ -69,7 +69,7 @@ styles.dark = {
 styles.modal = {
 	position: 'absolute',
 	color: 'white',
-	background: 'rgba(80, 80, 80, 0.7)',
+	background: 'rgba(80, 80, 80, 0.5)',
 	top: '25%',
 	left: '10%',
 	right: '10%',

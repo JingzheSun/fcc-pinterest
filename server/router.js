@@ -78,5 +78,19 @@ module.exports = function(app, passport){
 			}
 		});
 		res.redirect('/')
-	})
+	});
+
+	app.post('/collections', (req, res) => {
+		let user = req.body.user;
+		User.findByIdAndUpdate(user._id, { $set: {collections: user.collections}}, (err,data)=>{
+			res.send(data)
+		})
+	});
+
+	app.post('/thumb', (req, res) => {
+		let id = req.body.imageId;
+		Image.update({_id: id}, { $inc: {Like: 1}}, (err,data)=>{
+			res.send(data)
+		})
+	});
 }
