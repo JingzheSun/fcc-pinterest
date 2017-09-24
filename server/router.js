@@ -31,7 +31,7 @@ module.exports = function(app, passport){
 		if (info.submit == 'Login'){
 			passport.authenticate('local', {
 		        successRedirect: '/#/collections',
-		        failureRedirect: '/#/login/fail'
+		        failureRedirect: '/#/main/login/fail'
 		    })(req, res, next);
 		} else{
 			User.findOne({username:info.username}, (err,data) =>{
@@ -39,7 +39,7 @@ module.exports = function(app, passport){
 					console.log(err);
 					res.redirect('/#/')
 				} else if (data){
-					res.redirect('/#/login/registerfail')
+					res.redirect('/#/main/login/registerfail')
 				} else {
 					var user = new User({
 						username: info.username,

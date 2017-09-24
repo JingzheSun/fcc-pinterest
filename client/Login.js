@@ -48,8 +48,8 @@ export default class Login extends React.Component{
 	}
 }
 
-const Fail = () => (<p style={styles.fail}>Wrong username or password</p>)
-const Rfail = () => (<p style={styles.fail}>Username alredy exist</p>)
+const Fail = () => (<h4 style={styles.fail}><i className="fa fa-times-circle" aria-hidden="true"></i> Wrong username or password</h4>)
+const Rfail = () => (<h4 style={styles.fail}><i className="fa fa-times-circle" aria-hidden="true"></i> Username alredy exist</h4>)
 
 const styles = {}
 

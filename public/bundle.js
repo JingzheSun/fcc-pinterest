@@ -29049,12 +29049,9 @@ var GalleryRoute = function GalleryRoute(route) {
 };
 
 var Add = function Add(_ref) {
-	var match = _ref.match,
-	    history = _ref.history,
+	var history = _ref.history,
 	    location = _ref.location;
 
-	console.log(location);
-	console.log(match);
 	var back = function back(e) {
 		e.stopPropagation();
 		history.goBack();
@@ -30718,16 +30715,18 @@ exports.default = Login;
 
 var Fail = function Fail() {
 	return _react2.default.createElement(
-		'p',
+		'h4',
 		{ style: styles.fail },
-		'Wrong username or password'
+		_react2.default.createElement('i', { className: 'fa fa-times-circle', 'aria-hidden': 'true' }),
+		' Wrong username or password'
 	);
 };
 var Rfail = function Rfail() {
 	return _react2.default.createElement(
-		'p',
+		'h4',
 		{ style: styles.fail },
-		'Username alredy exist'
+		_react2.default.createElement('i', { className: 'fa fa-times-circle', 'aria-hidden': 'true' }),
+		' Username alredy exist'
 	);
 };
 
