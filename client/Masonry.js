@@ -6,9 +6,16 @@ import Bricks from 'bricks.js';
 export default class Masonry extends React.Component{
 
 	componentDidUpdate() {
+		instance.pack();
 		setTimeout(()=>{
 			instance.pack();	
 		}, 30)
+		setTimeout(()=>{
+			instance.pack();	
+		}, 300)
+		setTimeout(()=>{
+			instance.pack();	
+		}, 1000)
 	}
 
 	componentDidMount() {

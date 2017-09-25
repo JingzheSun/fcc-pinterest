@@ -30240,9 +30240,16 @@ var Masonry = function (_React$Component) {
 	_createClass(Masonry, [{
 		key: 'componentDidUpdate',
 		value: function componentDidUpdate() {
+			instance.pack();
 			setTimeout(function () {
 				instance.pack();
 			}, 30);
+			setTimeout(function () {
+				instance.pack();
+			}, 300);
+			setTimeout(function () {
+				instance.pack();
+			}, 1000);
 		}
 	}, {
 		key: 'componentDidMount',

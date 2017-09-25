@@ -14,7 +14,7 @@ var router = require("./server/router.js");/////////////
 mongoose.connect(url);
 var db = mongoose.connection;
 var options = {
-    host: "127.0.0.1",
+    host: process.env.REDIS_URL || "127.0.0.1",
     port: 6379,
     ttl: 30
 };
@@ -23,17 +23,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser('fccpinterest'));
 app.use(bodyParser());
 
-app.use(session({
-    secret: 'fccpinterest',
-    resave: true,
-  	saveUninitialized: true
-}));
 /*app.use(session({
-    store: new RedisStore(options),
     secret: 'fccpinterest',
     resave: true,
   	saveUninitialized: true
 }));*/
+app.use(session({
+    store: new RedisStore(options),
+    secret: 'fccpinterest',
+    resave: true,
+  	saveUninitialized: true
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(compression());
