@@ -10,6 +10,7 @@ export default class Nav extends React.Component{
 
 	render(){
 		let s = this.props.info;
+		let {location} = this.props;
 		const User = () =>(
 			<ul className="nav navbar-nav navbar-right">
 				<li className="dropdown" id='menu'>
@@ -28,7 +29,7 @@ export default class Nav extends React.Component{
 
 		const Guest = () =>(
 			<ul className="nav navbar-nav navbar-right">
-				<li><NavLink to={{pathname:`${this.props.location.pathname}/login`, state: {modal: true}}}>Login</NavLink></li>
+				<li><NavLink to={{pathname:`${location.pathname}/login`, state: {modal: true}}}>Login</NavLink></li>
 			</ul>
 		)
 

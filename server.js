@@ -14,8 +14,8 @@ var router = require("./server/router.js");/////////////
 mongoose.connect(url);
 var db = mongoose.connection;
 var options = {
-    host: process.env.REDIS_URL || "127.0.0.1",
-    port: 6379,
+    host: process.env.REDIS_URL && process.env.REDIS_URL.hostname || "127.0.0.1",
+    port: process.env.REDIS_URL && process.env.REDIS_URL.port || 6379,
     ttl: 30
 };
 

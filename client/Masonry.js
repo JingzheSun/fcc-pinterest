@@ -36,14 +36,24 @@ export default class Masonry extends React.Component{
 			images = images.filter(image=> state.user.collections.includes(image._id))
 		}
 		return(
-		<div className="container" id="container">
-	      	{images.map((v, i) => (
-	      		<div key={i} style={styles.base}>
-		      		<Link to={{pathname:`${match.url}/img/${v._id}`, state: {modal: true}}}>
-		      			<img src={v.url} onError={e => {e.target.src='notfound.jpg'}} style={styles.img} />
-		      		</Link>
-	      		</div>
-	        ))}
+		<div className="container">
+			<h1 style={styles.title}> 
+		    	{
+		    		location.pathname.endsWith('collections') ? 'My Collections' :
+		    		location.pathname.endsWith('my') ? 'My Images':
+		    		'Pinterest'
+		    	}
+		    </h1>
+		    <hr/>
+			<div className="container" id="container">
+		      	{images.map((v, i) => (
+		      		<div key={i} style={styles.base}>
+			      		<Link to={{pathname:`${match.url}/img/${v._id}`, state: {modal: true}}}>
+			      			<img src={v.url} onError={e => {e.target.src='notfound.jpg'}} style={styles.img} />
+			      		</Link>
+		      		</div>
+		        ))}
+		    </div>
 	    </div>
 		)
 	}
@@ -51,6 +61,10 @@ export default class Masonry extends React.Component{
 
 var instance;
 const styles = {};
+
+styles.title = {
+	color: 'white'
+}
 
 styles.base = {
  	width: '236px',

@@ -30095,9 +30095,9 @@ var Nav = function (_React$Component) {
 	}, {
 		key: 'render',
 		value: function render() {
-			var _this2 = this;
-
 			var s = this.props.info;
+			var location = this.props.location;
+
 			var User = function User() {
 				return _react2.default.createElement(
 					'ul',
@@ -30159,7 +30159,7 @@ var Nav = function (_React$Component) {
 						null,
 						_react2.default.createElement(
 							_reactRouterDom.NavLink,
-							{ to: { pathname: _this2.props.location.pathname + '/login', state: { modal: true } } },
+							{ to: { pathname: location.pathname + '/login', state: { modal: true } } },
 							'Login'
 						)
 					)
@@ -30279,20 +30279,30 @@ var Masonry = function (_React$Component) {
 			}
 			return _react2.default.createElement(
 				'div',
-				{ className: 'container', id: 'container' },
-				images.map(function (v, i) {
-					return _react2.default.createElement(
-						'div',
-						{ key: i, style: styles.base },
-						_react2.default.createElement(
-							_reactRouterDom.Link,
-							{ to: { pathname: match.url + '/img/' + v._id, state: { modal: true } } },
-							_react2.default.createElement('img', { src: v.url, onError: function onError(e) {
-									e.target.src = 'notfound.jpg';
-								}, style: styles.img })
-						)
-					);
-				})
+				{ className: 'container' },
+				_react2.default.createElement(
+					'h1',
+					{ style: styles.title },
+					location.pathname.endsWith('collections') ? 'My Collections' : location.pathname.endsWith('my') ? 'My Images' : 'Pinterest'
+				),
+				_react2.default.createElement('hr', null),
+				_react2.default.createElement(
+					'div',
+					{ className: 'container', id: 'container' },
+					images.map(function (v, i) {
+						return _react2.default.createElement(
+							'div',
+							{ key: i, style: styles.base },
+							_react2.default.createElement(
+								_reactRouterDom.Link,
+								{ to: { pathname: match.url + '/img/' + v._id, state: { modal: true } } },
+								_react2.default.createElement('img', { src: v.url, onError: function onError(e) {
+										e.target.src = 'notfound.jpg';
+									}, style: styles.img })
+							)
+						);
+					})
+				)
 			);
 		}
 	}]);
@@ -30305,6 +30315,10 @@ exports.default = Masonry;
 
 var instance;
 var styles = {};
+
+styles.title = {
+	color: 'white'
+};
 
 styles.base = {
 	width: '236px',
