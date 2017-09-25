@@ -29099,7 +29099,9 @@ var Image = function Image(_ref2) {
 		_react2.default.createElement(
 			'div',
 			{ style: styles.canvas },
-			_react2.default.createElement('img', { src: image.url, style: styles.img }),
+			_react2.default.createElement('img', { src: image.url, onError: function onError(e) {
+					e.target.src = 'notfound.jpg';
+				}, style: styles.img }),
 			_react2.default.createElement(
 				'div',
 				{ style: styles.op },
@@ -30278,7 +30280,9 @@ var Masonry = function (_React$Component) {
 						_react2.default.createElement(
 							_reactRouterDom.Link,
 							{ to: { pathname: match.url + '/img/' + v._id, state: { modal: true } } },
-							_react2.default.createElement('img', { src: v.url, style: styles.img })
+							_react2.default.createElement('img', { src: v.url, onError: function onError(e) {
+									e.target.src = 'notfound.jpg';
+								}, style: styles.img })
 						)
 					);
 				})

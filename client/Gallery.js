@@ -147,7 +147,7 @@ const Image = ({match, history, data, like, thumb}) => {
 	return(
 		<div style={styles.dark} onClick={back}>
 			<div style={styles.canvas}>
-				<img src={image.url} style={styles.img} />
+				<img src={image.url} onError={e => {e.target.src='notfound.jpg'}} style={styles.img} />
 				<div style={styles.op}>
 					<span className='pull-left'>
 						{

@@ -17,6 +17,7 @@
     "body-parser": "^1.17.2",
     "bricks.js": "^1.8.0",
     "compression": "^1.7.0",
+    "connect-redis": "^3.3.0",
     "cookie-parser": "^1.4.3",
     "css-loader": "^0.28.5",
     "express": "^4.15.4",

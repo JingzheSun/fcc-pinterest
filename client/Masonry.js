@@ -9,7 +9,6 @@ export default class Masonry extends React.Component{
 		setTimeout(()=>{
 			instance.pack();	
 		}, 30)
-		
 	}
 
 	componentDidMount() {
@@ -19,7 +18,7 @@ export default class Masonry extends React.Component{
 	componentWillUnmount() {
 		instance.resize(false);
 	}
-	
+
 	render(){
 		let {match} = this.props;
 		let state = this.props.info;
@@ -34,7 +33,7 @@ export default class Masonry extends React.Component{
 	      	{images.map((v, i) => (
 	      		<div key={i} style={styles.base}>
 		      		<Link to={{pathname:`${match.url}/img/${v._id}`, state: {modal: true}}}>
-		      			<img src={v.url} style={styles.img} />
+		      			<img src={v.url} onError={e => {e.target.src='notfound.jpg'}} style={styles.img} />
 		      		</Link>
 	      		</div>
 	        ))}
