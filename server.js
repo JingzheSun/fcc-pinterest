@@ -21,7 +21,8 @@ if (process.env.REDISTOGO_URL){
 
 var options = {
     host: opts.hostname || "127.0.0.1",
-    port: opts.port || 6379
+    port: opts.port || 6379,
+    pass: opts.auth.split(':')[1]
 };
 console.log(opts);
 console.log(options);
@@ -55,4 +56,5 @@ db.on('connected', ()=>{
 app.set('port', process.env.PORT || 5000);
 app.listen(app.get('port'), ()=>{
 	console.log('listening '+ app.get('port'));
+    console.log(process.env)
 });
