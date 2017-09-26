@@ -33,7 +33,7 @@ app.use(bodyParser());
   	saveUninitialized: true
 }));*/
 app.use(session({
-    store: new RedisStore(options),
+    store: new RedisStore(),
     secret: 'fccpinterest',
     resave: true,
   	saveUninitialized: true
