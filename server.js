@@ -23,6 +23,8 @@ var options = {
     host: opts.host || "127.0.0.1",
     port: opts.port || 6379
 };
+console.log(opts);
+console.log(options);
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser('fccpinterest'));
