@@ -14,13 +14,14 @@ var router = require("./server/router.js");/////////////
 mongoose.connect(url);
 var db = mongoose.connection;
 
+var opts = {};
 if (process.env.REDISTOGO_URL){
-    var url = require("url").parse(process.env.REDISTOGO_URL);
+    opts = require("url").parse(process.env.REDISTOGO_URL);
 }
 
 var options = {
-    host: url.hostname || "127.0.0.1",
-    port: url.port || 6379
+    host: opts.host || "127.0.0.1",
+    port: opts.port || 6379
 };
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -33,7 +34,7 @@ app.use(bodyParser());
   	saveUninitialized: true
 }));*/
 app.use(session({
-    store: new RedisStore(),
+    store: new RedisStore(options),
     secret: 'fccpinterest',
     resave: true,
   	saveUninitialized: true
