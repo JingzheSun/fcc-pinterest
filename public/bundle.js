@@ -29125,7 +29125,7 @@ var Image = function Image(_ref2) {
 var styles = {};
 
 styles.dark = {
-	position: 'absolute',
+	position: 'fixed',
 	top: 0,
 	left: 0,
 	bottom: 0,
@@ -30764,7 +30764,7 @@ styles.fail = {
 };
 
 styles.dark = {
-	position: 'absolute',
+	position: 'fixed',
 	top: 0,
 	left: 0,
 	bottom: 0,
