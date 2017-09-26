@@ -13,10 +13,14 @@ var app = express();
 var router = require("./server/router.js");/////////////
 mongoose.connect(url);
 var db = mongoose.connection;
+
+if (process.env.REDISTOGO_URL){
+    var url = require("url").parse(process.env.REDISTOGO_URL);
+}
+
 var options = {
-    host: process.env.REDIS_URL && process.env.REDIS_URL.hostname || "127.0.0.1",
-    port: process.env.REDIS_URL && process.env.REDIS_URL.port || 6379,
-    ttl: 30
+    host: url.hostname || "127.0.0.1",
+    port: url.port || 6379
 };
 
 app.use(express.static(path.join(__dirname, 'public')));
