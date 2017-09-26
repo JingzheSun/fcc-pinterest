@@ -30,6 +30,7 @@ export default class Masonry extends React.Component{
 		let {match} = this.props;
 		let state = this.props.info;
 		let images = state.images;
+		let {location} = this.props;
 		if (state.login && match.url == '/my'){
 			images = images.filter(image=>(image.creatorName == state.user.username))
 		}else if (state.login && match.url == '/collections'){

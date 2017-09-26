@@ -30268,6 +30268,8 @@ var Masonry = function (_React$Component) {
 
 			var state = this.props.info;
 			var images = state.images;
+			var location = this.props.location;
+
 			if (state.login && match.url == '/my') {
 				images = images.filter(function (image) {
 					return image.creatorName == state.user.username;
